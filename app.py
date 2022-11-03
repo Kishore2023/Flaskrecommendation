@@ -140,7 +140,7 @@ anime_index1 = pd.Series(anime.index, index = anime['Order2']).drop_duplicates()
 anime_index2 = pd.Series(anime.index, index = anime['Order3']).drop_duplicates()
 
 
-def get_recommendations(Order1, cosine_sim):
+def get_recommendations(Order1, topN):
     global result
  cosine_scores = list(enumerate(cosine_sim_matrix[anime_id]))
  cosine_scores = sorted(cosine_scores, key=lambda x:x[1], reverse = True)
@@ -169,9 +169,9 @@ def index():
 @app.route('/about',methods=['POST'])
 def getvalue():
     Ordername = request.form['Ordername']
-    get_recommendations(Ordername,topN)
+    get_recommendations(Ordername, topN)
     dfs=result
     return render_template('result.html',  tables=[dfs.to_html(classes='data')], titles=dfs.columns.values)
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
